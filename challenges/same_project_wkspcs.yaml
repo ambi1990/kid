@@ -1,0 +1,27 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: same-project-wkspcs
+  namespace: project-alpha
+spec:
+  description: Allow alpha workspaces to reach each other on port 8888 only.
+  endpointSelector:
+    matchLabels:
+      component: singleuser-server
+  ingress:
+    - fromEndpoints:
+      - matchLabels:
+          component: singleuser-server
+      toPorts:
+      - ports:
+        - port: "8888"
+          protocol: TCP
+  egress:
+    - toEndpoints:
+      - matchLabels:
+          component: singleuser-server
+      toPorts:
+      - ports:
+        - port: "8888"
+          protocol: TCP
+

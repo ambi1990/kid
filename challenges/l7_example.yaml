@@ -1,0 +1,21 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-example-get
+  namespace: project-alpha
+spec:
+  description: Project Alpha workspaces may only allow GET / on http://example.com
+  endpointSelector:
+    matchLabels:
+      component: singleuser-server
+  egress:
+    - toFQDNs:
+        - matchName: example.com
+      toPorts:
+        - ports:
+            - port: "80"
+              protocol: TCP
+          rules:
+            http:
+              - method: "GET"
+                path: "/"
